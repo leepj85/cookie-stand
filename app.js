@@ -1,7 +1,7 @@
 'use strict';
 
 // Global variables
-var storeHours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '5pm', '6pm', '7pm', '8pm'];
+var storeHours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
 var pikeContainerUlEl = document.getElementById('pike');
 var seaTacContainerUlEl = document.getElementById('seaTac');
 var seattleCenterContainerUlEl = document.getElementById('seattleCenter');
@@ -67,13 +67,15 @@ var storeContainers = [pikeContainerUlEl, seaTacContainerUlEl, seattleCenterCont
 
 // Helper function to calculate sales for each hour and return array.
 function generateSalesPerHourArray (store) {
-  // var totalSales = 0;
+  var totalSales = 0;
   var salesPerHourArr = [];
   for (var i = 0; i < storeHours.length; i++) {
     // var uLEl = document.createElement('li');
     var currentHourSales = Math.round(store.randomCustomersPerHr() * store.avgCookiesPerSale);
+    totalSales += currentHourSales;
     salesPerHourArr[i] = storeHours[i] + ': ' + currentHourSales + ' cookies';
   }
+  store.total = totalSales;
   return salesPerHourArr;
 }
 
@@ -89,4 +91,7 @@ for (var l = 0; l < storeLocations.length; l++) {
     liEL.textContent = storeLocations[l].hourlySalesArr[r];
     currContainer.appendChild(liEL);
   }
+  var totalLiEL = document.createElement('li');
+  totalLiEL.textContent = 'Total: ' + storeLocations[l].total + ' cookies';
+  currContainer.appendChild(totalLiEL);
 }
