@@ -116,9 +116,10 @@ var shop5 = {
   },
 };
 
-//Array to store all shop locations
-var shopLocationsArr = [shop1, shop2, shop3, shop4, shop5];
-var shopLocationsArrString = ['shop1', 'shop2', 'shop3', 'shop4', 'shop5'];
+// //Array to store all shop locations
+// var shopLocationsArr = [shop1, shop2, shop3, shop4, shop5];
+// var shopLocationsArrString = ['shop1', 'shop2', 'shop3', 'shop4', 'shop5'];
+
 //Run calcCookiesPerHr() function to populate cookiesPerHrArr array.
 shop1.calcCookiesPerHr();
 shop2.calcCookiesPerHr();
@@ -144,18 +145,6 @@ shop5.calcCookiesPerHr();
 //   //add listItem element to unorderedList element.
 //   shopContainerUlEl.appendChild(h3El);
 // }
-
-
-//loop through array to output time & cookies sold.
-for (var i = 0; i < shop1.operatingHrsArr.length; i++) {
-  var hr = shop1.operatingHrsArr[i];
-  var cookies = shop1.cookiesPerHrArr[i];
-  console.log(hr + ': ' + cookies + ' cookies');
-  var liEl = document.createElement('li');
-  liEl.textContent = hr + ': ' + cookies + ' cookies';
-  shop1ContainerUlEl.appendChild(liEl);
-}
-
 
 //assign unorderdList element
 var shop1ContainerUlEl = document.getElementById('shop1-container');
@@ -185,3 +174,13 @@ var shop5ContainerUlEl = document.getElementById('shop5-container');
 h3El = document.createElement('h3');
 h3El.textContent = shop4.name;
 shop5ContainerUlEl.appendChild(h3El);
+
+//loop through array to output time & cookies sold.
+for (var i = 0; i < shop1.operatingHrsArr.length; i++) {
+  var hr = shop1.operatingHrsArr[i];
+  var cookies = shop1.cookiesPerHrArr[i];
+  console.log(hr + ': ' + cookies + ' cookies');
+  var liEl = document.createElement('li');
+  liEl.textContent = hr + ': ' + cookies + ' cookies';
+  shop1ContainerUlEl.appendChild(liEl);
+}
