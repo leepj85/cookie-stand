@@ -1,6 +1,6 @@
-* {
+/* * {
   box-sizing: border-box;
-  outline: dotted red 1px;
+  outline: line red 1px;
 }
 
 .center {
@@ -21,4 +21,4 @@ h1 {
   white-space: nowrap;
   overflow:hidden;
   text-overflow: ellipsis;
-} */
+} */ 
