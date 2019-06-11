@@ -1,0 +1,24 @@
+/* * {
+  box-sizing: border-box;
+  outline: line red 1px;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1 {
+  text-align: center
+}
+
+/* ul {
+  list-style: none;
+} */
+
+/* main li {
+  white-space: nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+} */ 
