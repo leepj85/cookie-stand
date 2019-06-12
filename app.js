@@ -11,8 +11,10 @@ var SalmonStore = function(name, minCustPerHour, maxCustPerHour, avgCookiesPerSa
   this.maxCustPerHour = maxCustPerHour;
   this.avgCookiesPerSale = avgCookiesPerSale;
   this.randomCustomersPerHr = function() {
-    return Math.floor(Math.random() * (this.maxCustPerHour - this.minCustPerHour +1)) + this.minCustPerHour;
+    return Math.floor(Math.random() * (this.maxCustPerHour - this.minCustPerHour +1)) + this.minCustPerHour; 
   };
+  SalmonStore.storeLocations.push(this);
+  
   // Function to traverse sales-table and add hourly sales data
   this.render = function () {
     // Adding SalmonStore name
@@ -37,15 +39,16 @@ var SalmonStore = function(name, minCustPerHour, maxCustPerHour, avgCookiesPerSa
   };
 };
 
+SalmonStore.storeLocations = [];
+
 // Creating SalmonStore Objects using Constructor
 var pike = new SalmonStore('1st and Pike', 23, 64, 6.3);
 var seaTac = new SalmonStore('SeaTac Airport', 3, 24, 1.2);
+// eslint-disable-next-line no-unused-vars
 var seattleCenter = new SalmonStore('Seattle Center', 11, 38, 3.7);
+// eslint-disable-next-line no-unused-vars
 var capitolHill = new SalmonStore('Capitol Hill', 20, 38, 2.3);
 var alki = new SalmonStore('Alki', 2, 16, 4.6);
-
-//Array to help loop through each store object & containers
-var storeLocations = [pike, seaTac, seattleCenter, capitolHill, alki];
 
 // Helper function to calculate store sales for each hour and returns array
 function generateSalesPerHour (store) {
@@ -88,8 +91,8 @@ function footerRender() {
   // Calculating hourly totals from all stores.
   var sum=0;
   for (var h = 0; h < storeHours.length; h++) {
-    for (var c = 0; c < storeLocations.length; c++) {
-      sum += storeLocations[c].hourlySalesArr[h];
+    for (var c = 0; c <SalmonStore.storeLocations.length; c++) {
+      sum += SalmonStore.storeLocations[c].hourlySalesArr[h];
     }
     storeHourlyTotals[h] = sum;
     sum=0;
@@ -118,21 +121,31 @@ function footerRender() {
 function start() {
 /* Call helper function (generateSalesPerHour) to generate hourly sales for each store location
    and add it as property (.hourlySalesArr) of SalmonShop object*/
-  for (var l = 0; l < storeLocations.length; l++) {
-    var tempSalesArr = generateSalesPerHour(storeLocations[l]); //use helper function
+  for (var l = 0; l < SalmonStore.storeLocations.length; l++) {
+    var tempSalesArr = generateSalesPerHour(SalmonStore.storeLocations[l]); //use helper function
 
     // Adding new array property (hourlySalesArr) to SalmonStore object.
-    storeLocations[l].hourlySalesArr = tempSalesArr;
+    SalmonStore.storeLocations[l].hourlySalesArr = tempSalesArr;
   }
   // Calling headerRender() function to create column headers for table
   headerRender();
 
   // Calling SalmonStore render() method for all stores
-  for (var s = 0; s < storeLocations.length; s++) {
-    storeLocations[s].render();
+  for (var s = 0; s < SalmonStore.storeLocations.length; s++) {
+    SalmonStore.storeLocations[s].render();
   }
   // Calling footerRender() function to create total rows for table
   footerRender();
 }
 
 start();
+
+var storeForm = document.getElementById('store-form');
+
+storeForm.addEventListener('submit', function(event){
+  event.preventDefault();
+  console.log(event);
+  console.log(event.target);
+  new SalmonStore(event.target.storeName.value, event.target.minCustomer.value, event.target.maxCustomer.value, event.target.avgCookie.value);
+
+});

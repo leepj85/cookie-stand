@@ -8,7 +8,27 @@
   <body>
     <main>
       <table id='sales-table'></table>
+
+      <form id="store-form">
+        <fieldset>
+          <legend<>Add New Store</legend>
+          <label for="store-name">Store Name:</label>
+          <input name="storeName" type="text"></br>
+  
+          <label for="min-customer">Minimum customer per hour:</label>
+          <input name="minCustomer" type="text"></br>
+  
+          <label for="max-customer">Maximum customer per hour:</label>
+          <input name="maxCustomer" type="text"></br>
+  
+          <label for="avg-cookie">Avg Cookie Per Sale:</label>
+          <input name="avgCookie" type="text"></br>
+
+          <button type="submit">Store Submit</button>
+        </fieldset>
+      </form>
     </main>
     <script src="./app.js"></script>
+    <script src="./form.js"></script>
   </body>
 </html>
