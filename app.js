@@ -2,96 +2,137 @@
 
 // Global variables
 var storeHours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
-var pikeContainerUlEl = document.getElementById('pike');
-var seaTacContainerUlEl = document.getElementById('seaTac');
-var seattleCenterContainerUlEl = document.getElementById('seattleCenter');
-var capitolHillContainerUlEl = document.getElementById('capitolHill');
-var alkiContainerUlEl = document.getElementById('alki');
+var storeHourlyTotals=[];
 
-// Create store Objects
-
-var pike = {
-  name: '1st and Pike',
-  minCustPerHour: 23,
-  maxCustPerHour: 64,
-  avgCookiesPerSale: 6.3,
-  randomCustomersPerHr : function() { // Generate random number of customers per hour.
+// Modify Object Literals to Contructor
+var SalmonStore = function(name, minCustPerHour, maxCustPerHour, avgCookiesPerSale) {
+  this.name = name;
+  this.minCustPerHour = minCustPerHour;
+  this.maxCustPerHour = maxCustPerHour;
+  this.avgCookiesPerSale = avgCookiesPerSale;
+  this.randomCustomersPerHr = function() {
     return Math.floor(Math.random() * (this.maxCustPerHour - this.minCustPerHour +1)) + this.minCustPerHour;
-  },
+  };
+  // Function to traverse sales-table and add hourly sales data
+  this.render = function () {
+    // Adding SalmonStore name
+    var tableEl = document.getElementById('sales-table');
+    var trEl = document.createElement('tr');
+    var tdEl = document.createElement('td');
+    tdEl.textContent = this.name;
+    trEl.appendChild(tdEl);
+    tableEl.appendChild(trEl);
+    // Looping through SalmonShops hourlySalesArray and add to table
+    for (var i = 0; i < this.hourlySalesArr.length; i++) {
+      tdEl = document.createElement('td');
+      tdEl.textContent = this.hourlySalesArr[i];
+      trEl.appendChild(tdEl);
+      tableEl.appendChild(trEl);
+    }
+    // Adding daily total sales at right-end of table
+    tdEl = document.createElement('td');
+    tdEl.textContent = this.totalSales;
+    trEl.appendChild(tdEl);
+    tableEl.appendChild(trEl);
+  };
 };
 
-var seaTac = {
-  name: 'SeaTac Airport',
-  minCustPerHour: 3,
-  maxCustPerHour: 24,
-  avgCookiesPerSale: 1.2,
-  randomCustomersPerHr : function() { // Generate random number of customers per hour.
-    return Math.floor(Math.random() * (this.maxCustPerHour - this.minCustPerHour +1)) + this.minCustPerHour;
-  },
-};
+// Creating SalmonStore Objects using Constructor
+var pike = new SalmonStore('1st and Pike', 23, 64, 6.3);
+var seaTac = new SalmonStore('SeaTac Airport', 3, 24, 1.2);
+var seattleCenter = new SalmonStore('Seattle Center', 11, 38, 3.7);
+var capitolHill = new SalmonStore('Capitol Hill', 20, 38, 2.3);
+var alki = new SalmonStore('Alki', 2, 16, 4.6);
 
-var seattleCenter = {
-  name: 'Seattle Center',
-  minCustPerHour: 11,
-  maxCustPerHour: 38,
-  avgCookiesPerSale: 3.7,
-  randomCustomersPerHr : function() { // Generate random number of customers per hour.
-    return Math.floor(Math.random() * (this.maxCustPerHour - this.minCustPerHour +1)) + this.minCustPerHour;
-  },
-};
-
-var capitolHill = {
-  name: 'Capitol Hill',
-  minCustPerHour: 20,
-  maxCustPerHour: 38,
-  avgCookiesPerSale: 2.3,
-  randomCustomersPerHr : function() { // Generate random number of customers per hour.
-    return Math.floor(Math.random() * (this.maxCustPerHour - this.minCustPerHour +1)) + this.minCustPerHour;
-  },
-};
-
-var alki = {
-  name: 'Alki',
-  minCustPerHour: 2,
-  maxCustPerHour: 16,
-  avgCookiesPerSale: 4.6,
-  randomCustomersPerHr : function() { // Generate random number of customers per hour.
-    return Math.floor(Math.random() * (this.maxCustPerHour - this.minCustPerHour +1)) + this.minCustPerHour;
-  },
-  
-};
-
+//Array to help loop through each store object & containers
 var storeLocations = [pike, seaTac, seattleCenter, capitolHill, alki];
-var storeContainers = [pikeContainerUlEl, seaTacContainerUlEl, seattleCenterContainerUlEl, 
-  capitolHillContainerUlEl, alkiContainerUlEl];
 
-// Helper function to calculate sales for each hour and return array.
-function generateSalesPerHourArray (store) {
-  var totalSales = 0;
-  var salesPerHourArr = [];
+// Helper function to calculate store sales for each hour and returns array
+function generateSalesPerHour (store) {
+  let total = 0;
+  let salesPerHourArr = [];
   for (var i = 0; i < storeHours.length; i++) {
-    // var uLEl = document.createElement('li');
     var currentHourSales = Math.round(store.randomCustomersPerHr() * store.avgCookiesPerSale);
-    totalSales += currentHourSales;
-    salesPerHourArr[i] = storeHours[i] + ': ' + currentHourSales + ' cookies';
+    total += currentHourSales;
+    salesPerHourArr[i] = currentHourSales;
   }
-  store.total = totalSales;
+  // Adding new property totalSales to SalmonStore
+  store.totalSales = total;
   return salesPerHourArr;
 }
 
-// Call helper function to generate hourly sales for each store location 
-// (calling generateSalesPerHourArray) and add it as property (.hourlySalesArr) of object.
-for (var l = 0; l < storeLocations.length; l++) {
-  var hrSalesArr = generateSalesPerHourArray(storeLocations[l]); //use helper function
-  storeLocations[l].hourlySalesArr = hrSalesArr; //store it in each store object.
-  var currContainer = storeContainers[l]; //grab container element.
-  // Print each stores hourly sales in <li> 
-  for (var r = 0; r < storeLocations[l].hourlySalesArr.length; r++){
-    var liEL = document.createElement('li');
-    liEL.textContent = storeLocations[l].hourlySalesArr[r];
-    currContainer.appendChild(liEL);
+function headerRender() {
+  // Adding location column
+  var tableEl = document.getElementById('sales-table');
+  var trEl = document.createElement('tr');
+  var tdEl = document.createElement('td');
+  tdEl.textContent = 'Locations';
+  trEl.appendChild(tdEl);
+
+  // Looping to add all open hours columns
+  for (var e = 0; e < storeHours.length; e++) {
+    tdEl = document.createElement('td');
+    tdEl.textContent = storeHours[e];
+    trEl.appendChild(tdEl);
   }
-  var totalLiEL = document.createElement('li');
-  totalLiEL.textContent = 'Total: ' + storeLocations[l].total + ' cookies';
-  currContainer.appendChild(totalLiEL);
+  // Adding column for store totals
+  tdEl = document.createElement('td');
+  tdEl.textContent = 'Daily Location Total';
+  trEl.appendChild(tdEl);
+
+  // Appending <tr> back to the table.
+  tableEl.appendChild(trEl);
 }
+
+function footerRender() {
+  // Calculating hourly totals from all stores.
+  var sum=0;
+  for (var h = 0; h < storeHours.length; h++) {
+    for (var c = 0; c < storeLocations.length; c++) {
+      sum += storeLocations[c].hourlySalesArr[h];
+    }
+    storeHourlyTotals[h] = sum;
+    sum=0;
+  }
+  // Adding Totals column
+  var tableEl = document.getElementById('sales-table');
+  var trEl = document.createElement('tr');
+  var tdEl = document.createElement('td');
+  tdEl.textContent = 'Total';
+  trEl.appendChild(tdEl);
+  tableEl.appendChild(trEl);
+
+  var summation=0;
+  for (var t = 0; t < storeHourlyTotals.length; t++) {
+    tdEl = document.createElement('td');
+    summation += storeHourlyTotals[t];
+    tdEl.textContent = storeHourlyTotals[t];
+    trEl.appendChild(tdEl);
+  }
+  tdEl = document.createElement('td');
+  tdEl.textContent = summation;
+  trEl.appendChild(tdEl);
+  tableEl.appendChild(trEl);
+}
+
+function start() {
+/* Call helper function (generateSalesPerHour) to generate hourly sales for each store location
+   and add it as property (.hourlySalesArr) of SalmonShop object*/
+  for (var l = 0; l < storeLocations.length; l++) {
+    var tempSalesArr = generateSalesPerHour(storeLocations[l]); //use helper function
+
+    // Adding new array property (hourlySalesArr) to SalmonStore object.
+    storeLocations[l].hourlySalesArr = tempSalesArr;
+  }
+  // Calling headerRender() function to create column headers for table
+  headerRender();
+
+  // Calling SalmonStore render() method for all stores
+  for (var s = 0; s < storeLocations.length; s++) {
+    storeLocations[s].render();
+  }
+  // Calling footerRender() function to create total rows for table
+  footerRender();
+}
+
+start();
