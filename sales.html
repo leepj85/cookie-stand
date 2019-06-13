@@ -7,11 +7,13 @@
   </head>
   <body>
     <main>
-      <table id='sales-table'></table>
-
+      <table id="sales-table"></table>
+        <thead></thead>
+        <!-- <tbody id="tableBody"></tbody>
+        <tfoot id="tableFoot"></tfoot> -->
       <form id="store-form">
         <fieldset>
-          <legend<>Add New Store</legend>
+          <legend>New Store</legend>
           <label for="store-name">Store Name:</label>
           <input name="storeName" type="text"></br>
   
@@ -24,11 +26,10 @@
           <label for="avg-cookie">Avg Cookie Per Sale:</label>
           <input name="avgCookie" type="text"></br>
 
-          <button type="submit">Store Submit</button>
+          <button type="submit">Add New Store</button>
         </fieldset>
       </form>
     </main>
     <script src="./app.js"></script>
-    <script src="./form.js"></script>
   </body>
 </html>

@@ -2,7 +2,7 @@
 
 // Global variables
 var storeHours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
-var storeHourlyTotals=[];
+var storeHourlyTotals = [];
 
 // Modify Object Literals to Contructor
 var SalmonStore = function(name, minCustPerHour, maxCustPerHour, avgCookiesPerSale) {
@@ -10,6 +10,7 @@ var SalmonStore = function(name, minCustPerHour, maxCustPerHour, avgCookiesPerSa
   this.minCustPerHour = minCustPerHour;
   this.maxCustPerHour = maxCustPerHour;
   this.avgCookiesPerSale = avgCookiesPerSale;
+  this.hourlySalesArr = [];
   this.randomCustomersPerHr = function() {
     return Math.floor(Math.random() * (this.maxCustPerHour - this.minCustPerHour +1)) + this.minCustPerHour; 
   };
@@ -146,6 +147,7 @@ storeForm.addEventListener('submit', function(event){
   event.preventDefault();
   console.log(event);
   console.log(event.target);
-  new SalmonStore(event.target.storeName.value, event.target.minCustomer.value, event.target.maxCustomer.value, event.target.avgCookie.value);
-
+  var newStore = new SalmonStore(event.target.storeName.value, event.target.minCustomer.value, event.target.maxCustomer.value, event.target.avgCookie.value);
+  newStore.hourlySalesArr = generateSalesPerHour(newStore);
+  newStore.render();
 });
