@@ -2,10 +2,11 @@
 
 // Global variables
 var storeHours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
-var storeHourlyTotals = [];
+var allStoreHourlyTotals = [];
 
 // Modify Object Literals to Contructor
-var SalmonStore = function(name, minCustPerHour, maxCustPerHour, avgCookiesPerSale) {
+var SalmonStore = function(name, minCustPerHour, maxCustPerHour, avgCookiesPerSale) 
+{
   this.name = name;
   this.minCustPerHour = minCustPerHour;
   this.maxCustPerHour = maxCustPerHour;
@@ -15,9 +16,10 @@ var SalmonStore = function(name, minCustPerHour, maxCustPerHour, avgCookiesPerSa
     return Math.floor(Math.random() * (this.maxCustPerHour - this.minCustPerHour +1)) + this.minCustPerHour; 
   };
   SalmonStore.storeLocations.push(this);
-  
+ 
   // Function to traverse sales-table and add hourly sales data
   this.render = function () {
+    calculateDailySales();
     // Adding SalmonStore name
     var tableEl = document.getElementById('sales-table');
     var trEl = document.createElement('tr');
@@ -39,7 +41,7 @@ var SalmonStore = function(name, minCustPerHour, maxCustPerHour, avgCookiesPerSa
     tableEl.appendChild(trEl);
   };
 };
-
+// Array of Store Objects
 SalmonStore.storeLocations = [];
 
 // Creating SalmonStore Objects using Constructor
@@ -50,6 +52,18 @@ var seattleCenter = new SalmonStore('Seattle Center', 11, 38, 3.7);
 // eslint-disable-next-line no-unused-vars
 var capitolHill = new SalmonStore('Capitol Hill', 20, 38, 2.3);
 var alki = new SalmonStore('Alki', 2, 16, 4.6);
+
+function calculateDailySales () {
+  // Calculating hourly totals from all stores.
+  var sum=0;
+  for (var h = 0; h < storeHours.length; h++) {
+    for (var c = 0; c <SalmonStore.storeLocations.length; c++) {
+      sum += SalmonStore.storeLocations[c].hourlySalesArr[h];
+    }
+    allStoreHourlyTotals[h] = sum;
+    sum=0;
+  }
+}
 
 // Helper function to calculate store sales for each hour and returns array
 function generateSalesPerHour (store) {
@@ -84,20 +98,13 @@ function headerRender() {
   tdEl.textContent = 'Daily Location Total';
   trEl.appendChild(tdEl);
 
+
   // Appending <tr> back to the table.
   tableEl.appendChild(trEl);
 }
 
 function footerRender() {
-  // Calculating hourly totals from all stores.
-  var sum=0;
-  for (var h = 0; h < storeHours.length; h++) {
-    for (var c = 0; c <SalmonStore.storeLocations.length; c++) {
-      sum += SalmonStore.storeLocations[c].hourlySalesArr[h];
-    }
-    storeHourlyTotals[h] = sum;
-    sum=0;
-  }
+
   // Adding Totals column
   var tableEl = document.getElementById('sales-table');
   var trEl = document.createElement('tr');
@@ -107,10 +114,10 @@ function footerRender() {
   tableEl.appendChild(trEl);
 
   var summation=0;
-  for (var t = 0; t < storeHourlyTotals.length; t++) {
+  for (var t = 0; t < allStoreHourlyTotals.length; t++) {
     tdEl = document.createElement('td');
-    summation += storeHourlyTotals[t];
-    tdEl.textContent = storeHourlyTotals[t];
+    summation += allStoreHourlyTotals[t];
+    tdEl.textContent = allStoreHourlyTotals[t];
     trEl.appendChild(tdEl);
   }
   tdEl = document.createElement('td');
@@ -119,9 +126,18 @@ function footerRender() {
   tableEl.appendChild(trEl);
 }
 
+// ONLY USE WHEN ADDING NEW STORE
+// Deletes all current rows in table 'sales-table.
+function deleteTableRows() {
+  var tempTable = document.getElementById('sales-table');
+  while (tempTable.hasChildNodes()) {
+    tempTable.removeChild(tempTable.firstChild);
+  }
+}
+
 function start() {
-/* Call helper function (generateSalesPerHour) to generate hourly sales for each store location
-   and add it as property (.hourlySalesArr) of SalmonShop object*/
+// Call helper function (generateSalesPerHour) to generate hourly sales for each store location
+// and add it to SalmonStore property hourlySalesArr).
   for (var l = 0; l < SalmonStore.storeLocations.length; l++) {
     var tempSalesArr = generateSalesPerHour(SalmonStore.storeLocations[l]); //use helper function
 
@@ -141,13 +157,13 @@ function start() {
 
 start();
 
+// Grabbing input values from 'store-form' on sales.html
 var storeForm = document.getElementById('store-form');
 
 storeForm.addEventListener('submit', function(event){
   event.preventDefault();
-  console.log(event);
-  console.log(event.target);
   var newStore = new SalmonStore(event.target.storeName.value, event.target.minCustomer.value, event.target.maxCustomer.value, event.target.avgCookie.value);
   newStore.hourlySalesArr = generateSalesPerHour(newStore);
-  newStore.render();
+  deleteTableRows();
+  start();
 });
