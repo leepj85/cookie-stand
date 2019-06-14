@@ -16,7 +16,7 @@ var SalmonStore = function(name, minCustPerHour, maxCustPerHour, avgCookiesPerSa
     return Math.floor(Math.random() * (this.maxCustPerHour - this.minCustPerHour +1)) + this.minCustPerHour; 
   };
   SalmonStore.storeLocations.push(this);
- 
+
   // Function to traverse sales-table and add hourly sales data
   this.render = function () {
     calculateDailySales();
@@ -95,10 +95,10 @@ function headerRender() {
   }
   // Adding column for store totals
   tdEl = document.createElement('td');
-  tdEl.textContent = 'Daily Location Total';
+  tdEl.textContent = 'Total';
   trEl.appendChild(tdEl);
 
-
+  console.log(trEl);
   // Appending <tr> back to the table.
   tableEl.appendChild(trEl);
 }
@@ -155,6 +155,7 @@ function start() {
   footerRender();
 }
 
+// Calling start() function to initialize table rendering.
 start();
 
 // Grabbing input values from 'store-form' on sales.html
