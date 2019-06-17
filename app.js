@@ -5,7 +5,7 @@ var storeHours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2p
 var allStoreHourlyTotals = [];
 
 // Modify Object Literals to Contructor
-var SalmonStore = function(name, minCustPerHour, maxCustPerHour, avgCookiesPerSale) 
+var SalmonStore = function(name, minCustPerHour, maxCustPerHour, avgCookiesPerSale)
 {
   this.name = name;
   this.minCustPerHour = minCustPerHour;
@@ -13,7 +13,7 @@ var SalmonStore = function(name, minCustPerHour, maxCustPerHour, avgCookiesPerSa
   this.avgCookiesPerSale = avgCookiesPerSale;
   this.hourlySalesArr = [];
   this.randomCustomersPerHr = function() {
-    return Math.floor(Math.random() * (this.maxCustPerHour - this.minCustPerHour +1)) + this.minCustPerHour; 
+    return Math.floor(Math.random() * (this.maxCustPerHour - this.minCustPerHour +1)) + this.minCustPerHour;
   };
   SalmonStore.storeLocations.push(this);
 
@@ -45,13 +45,11 @@ var SalmonStore = function(name, minCustPerHour, maxCustPerHour, avgCookiesPerSa
 SalmonStore.storeLocations = [];
 
 // Creating SalmonStore Objects using Constructor
-var pike = new SalmonStore('1st and Pike', 23, 64, 6.3);
-var seaTac = new SalmonStore('SeaTac Airport', 3, 24, 1.2);
-// eslint-disable-next-line no-unused-vars
-var seattleCenter = new SalmonStore('Seattle Center', 11, 38, 3.7);
-// eslint-disable-next-line no-unused-vars
-var capitolHill = new SalmonStore('Capitol Hill', 20, 38, 2.3);
-var alki = new SalmonStore('Alki', 2, 16, 4.6);
+new SalmonStore('1st and Pike', 23, 64, 6.3);
+new SalmonStore('SeaTac Airport', 3, 24, 1.2);
+new SalmonStore('Seattle Center', 11, 38, 3.7);
+new SalmonStore('Capitol Hill', 20, 38, 2.3);
+new SalmonStore('Alki', 2, 16, 4.6);
 
 function calculateDailySales () {
   // Calculating hourly totals from all stores.
@@ -95,21 +93,19 @@ function headerRender() {
   }
   // Adding column for store totals
   tdEl = document.createElement('td');
-  tdEl.textContent = 'Total';
+  tdEl.textContent = 'Store Total';
   trEl.appendChild(tdEl);
-
-  console.log(trEl);
   // Appending <tr> back to the table.
   tableEl.appendChild(trEl);
 }
 
 function footerRender() {
 
-  // Adding Totals column
+  // Adding Hourly Totals column
   var tableEl = document.getElementById('sales-table');
   var trEl = document.createElement('tr');
   var tdEl = document.createElement('td');
-  tdEl.textContent = 'Total';
+  tdEl.textContent = 'Hourly Total';
   trEl.appendChild(tdEl);
   tableEl.appendChild(trEl);
 
