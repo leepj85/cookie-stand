@@ -38,7 +38,7 @@ nav > ul {
 }
 nav > ul > li {
   float: left;
-  margin-right: 90px;
+  margin-right: 120px;
   line-height: 60px;
 }
 
@@ -47,15 +47,21 @@ nav > ul > li {
   margin-right: 90px;
 } */
 
-nav > ul > li:first-child {
+/* nav > ul > li:first-child {
   margin-right: 25px;
-}
-nav > ul > li:last-child {
+} */
+/* nav > ul > li:last-child {
   margin-right: 120px;
-}
+} */
 
 main > img:first-child {
   margin-bottom: 30px;
+}
+
+img[src="/images/chinook.png"] {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 main > ul > li {
@@ -82,6 +88,10 @@ main > article > section {
   padding-left: 30px;
 }
 
+main > table {
+  margin: 0 auto;
+}
+
 section {
   position: relative;
   height: 400px;
@@ -104,9 +114,15 @@ section > button:hover {
   cursor: pointer;
 }
 
+h1 {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: bolder;
+  color: salmon;
+}
 h3 {
   font-size: 1.3em;
   margin-bottom: 7px;
+
 }
 
 section div {
